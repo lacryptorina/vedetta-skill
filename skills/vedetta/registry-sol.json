@@ -1,0 +1,316 @@
+{
+  "service": "Vedetta",
+  "rail": "solana",
+  "base_url": "https://vedetta.dethboy.com/sol",
+  "network": "solana:mainnet",
+  "payTo": "4kEdSopjVayXZ8DpAe6G3fVEFYDj6cny6AjWEEWr3Hdq",
+  "agent_asset": "2p7BDa8Y5B9pVtTxTbiyWcioqjEnbqXPbMQDAQcoEQJg",
+  "endpoints": [
+    {
+      "slug": "ask",
+      "method": "GET",
+      "url": "https://vedetta.dethboy.com/sol/v1/ask",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "solana:mainnet",
+      "description": "Live analyst answer",
+      "params": {
+        "q": "string",
+        "asset": "string"
+      },
+      "parallel_of": "https://vedetta.dethboy.com/v1/ask"
+    },
+    {
+      "slug": "consensus",
+      "method": "GET",
+      "url": "https://vedetta.dethboy.com/sol/v1/consensus",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "solana:mainnet",
+      "description": "Sentiment x price divergence verdict",
+      "params": {
+        "asset": "string"
+      },
+      "parallel_of": "https://vedetta.dethboy.com/v1/consensus"
+    },
+    {
+      "slug": "equity",
+      "method": "GET",
+      "url": "https://vedetta.dethboy.com/sol/v1/equity",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "solana:mainnet",
+      "description": "US stock divergence read",
+      "params": {
+        "asset": "string"
+      },
+      "parallel_of": "https://vedetta.dethboy.com/v1/equity"
+    },
+    {
+      "slug": "macro",
+      "method": "GET",
+      "url": "https://vedetta.dethboy.com/sol/v1/macro",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "solana:mainnet",
+      "description": "Macro instrument read",
+      "params": {
+        "asset": "string"
+      },
+      "parallel_of": "https://vedetta.dethboy.com/v1/macro"
+    },
+    {
+      "slug": "prediction",
+      "method": "GET",
+      "url": "https://vedetta.dethboy.com/sol/v1/prediction",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "solana:mainnet",
+      "description": "Falsifiable prediction",
+      "params": {
+        "asset": "string",
+        "horizon": "24h|7d|30d"
+      },
+      "parallel_of": "https://vedetta.dethboy.com/v1/prediction"
+    },
+    {
+      "slug": "pulse",
+      "method": "GET",
+      "url": "https://vedetta.dethboy.com/sol/v1/pulse",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "solana:mainnet",
+      "description": "Market-wide regime read",
+      "params": {},
+      "parallel_of": "https://vedetta.dethboy.com/v1/pulse"
+    },
+    {
+      "slug": "theme",
+      "method": "GET",
+      "url": "https://vedetta.dethboy.com/sol/v1/theme",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "solana:mainnet",
+      "description": "Theme/narrative deep-dive",
+      "params": {
+        "theme": "string"
+      },
+      "parallel_of": "https://vedetta.dethboy.com/v1/theme"
+    },
+    {
+      "slug": "trend",
+      "method": "GET",
+      "url": "https://vedetta.dethboy.com/sol/v1/trend",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "solana:mainnet",
+      "description": "Price-vs-sentiment trajectory",
+      "params": {
+        "asset": "string",
+        "window": "24h|7d|30d"
+      },
+      "parallel_of": "https://vedetta.dethboy.com/v1/trend"
+    },
+    {
+      "slug": "news-read",
+      "method": "GET",
+      "url": "https://vedetta.dethboy.com/sol/v1/news-read",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "solana:mainnet",
+      "description": "Market-moving news + sentiment",
+      "params": {
+        "asset": "string"
+      },
+      "parallel_of": "https://vedetta.dethboy.com/v1/news-read"
+    },
+    {
+      "slug": "house-view",
+      "method": "GET",
+      "url": "https://vedetta.dethboy.com/sol/v1/house-view",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "solana:mainnet",
+      "description": "Desk thesis + conviction",
+      "params": {
+        "asset": "string"
+      },
+      "parallel_of": "https://vedetta.dethboy.com/v1/house-view"
+    },
+    {
+      "slug": "event",
+      "method": "GET",
+      "url": "https://vedetta.dethboy.com/sol/v1/event",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "solana:mainnet",
+      "description": "Live trigger probe",
+      "params": {
+        "asset": "string"
+      },
+      "parallel_of": "https://vedetta.dethboy.com/v1/event"
+    },
+    {
+      "slug": "odds",
+      "method": "GET",
+      "url": "https://vedetta.dethboy.com/sol/v1/odds",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "solana:mainnet",
+      "description": "Prediction-market odds",
+      "params": {
+        "asset": "string"
+      },
+      "parallel_of": "https://vedetta.dethboy.com/v1/odds"
+    },
+    {
+      "slug": "social",
+      "method": "GET",
+      "url": "https://vedetta.dethboy.com/sol/v1/social",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "solana:mainnet",
+      "description": "Social sentiment",
+      "params": {
+        "asset": "string"
+      },
+      "parallel_of": "https://vedetta.dethboy.com/v1/social"
+    },
+    {
+      "slug": "narrative",
+      "method": "GET",
+      "url": "https://vedetta.dethboy.com/sol/v1/narrative",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "solana:mainnet",
+      "description": "Dominant narrative",
+      "params": {
+        "asset": "string"
+      },
+      "parallel_of": "https://vedetta.dethboy.com/v1/narrative"
+    },
+    {
+      "slug": "screener",
+      "method": "GET",
+      "url": "https://vedetta.dethboy.com/sol/v1/screener",
+      "price_usd": 0.01,
+      "currency": "USDC",
+      "network": "solana:mainnet",
+      "description": "Cross-asset divergence screener (cached)",
+      "params": {
+        "only": "divergent?"
+      },
+      "parallel_of": "https://vedetta.dethboy.com/v1/screener"
+    },
+    {
+      "slug": "snapshot",
+      "method": "GET",
+      "url": "https://vedetta.dethboy.com/sol/v1/snapshot",
+      "price_usd": 0.01,
+      "currency": "USDC",
+      "network": "solana:mainnet",
+      "description": "Latest cached signal",
+      "params": {
+        "asset": "string"
+      },
+      "parallel_of": "https://vedetta.dethboy.com/v1/snapshot",
+      "free": false
+    },
+    {
+      "slug": "history",
+      "method": "GET",
+      "url": "https://vedetta.dethboy.com/sol/v1/history",
+      "price_usd": 0.01,
+      "currency": "USDC",
+      "network": "solana:mainnet",
+      "description": "Cached signal history",
+      "params": {
+        "asset": "string",
+        "limit": "int"
+      },
+      "parallel_of": "https://vedetta.dethboy.com/v1/history"
+    },
+    {
+      "slug": "track-record",
+      "method": "GET",
+      "url": "https://vedetta.dethboy.com/sol/v1/track-record",
+      "price_usd": 0.0,
+      "currency": "FREE",
+      "network": "none",
+      "description": "Verifiable log (FREE)",
+      "params": {
+        "asset": "string?"
+      },
+      "parallel_of": "https://vedetta.dethboy.com/v1/track-record",
+      "free": true
+    },
+    {
+      "slug": "feed",
+      "method": "GET",
+      "url": "https://vedetta.dethboy.com/sol/v1/feed",
+      "price_usd": 0.01,
+      "currency": "USDC",
+      "network": "solana:mainnet",
+      "description": "Desk post stream (cached)",
+      "params": {
+        "limit": "int",
+        "asset": "string?"
+      },
+      "parallel_of": "https://vedetta.dethboy.com/v1/feed",
+      "free": false
+    },
+    {
+      "slug": "route",
+      "method": "GET",
+      "url": "https://vedetta.dethboy.com/sol/v1/route",
+      "price_usd": 0.01,
+      "currency": "USDC",
+      "network": "solana:mainnet",
+      "description": "Task router",
+      "params": {
+        "task": "string"
+      },
+      "parallel_of": "https://vedetta.dethboy.com/v1/route",
+      "free": false
+    },
+    {
+      "slug": "korra/calls",
+      "method": "GET",
+      "url": "https://vedetta.dethboy.com/sol/v1/korra/calls",
+      "price_usd": 0.01,
+      "currency": "USDC",
+      "network": "solana:mainnet",
+      "description": "Korra open calls (open_calls redacted)",
+      "params": {
+        "asset": "string?"
+      },
+      "parallel_of": "https://vedetta.dethboy.com/v1/korra/calls"
+    },
+    {
+      "slug": "korra/news",
+      "method": "GET",
+      "url": "https://vedetta.dethboy.com/sol/v1/korra/news",
+      "price_usd": 0.01,
+      "currency": "USDC",
+      "network": "solana:mainnet",
+      "description": "Korra scored news",
+      "params": {
+        "asset": "string?"
+      },
+      "parallel_of": "https://vedetta.dethboy.com/v1/korra/news"
+    },
+    {
+      "slug": "korra/lean",
+      "method": "GET",
+      "url": "https://vedetta.dethboy.com/sol/v1/korra/lean",
+      "price_usd": 0.01,
+      "currency": "USDC",
+      "network": "solana:mainnet",
+      "description": "Korra lean (FEAR_GREED full; others teaser)",
+      "params": {
+        "asset": "string?"
+      },
+      "parallel_of": "https://vedetta.dethboy.com/v1/korra/lean"
+    }
+  ]
+}

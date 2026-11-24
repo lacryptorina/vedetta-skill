@@ -1,0 +1,942 @@
+{
+  "service": "Vedetta",
+  "base_url": "https://vedetta.dethboy.com",
+  "version": "2.14.1",
+  "description": "Dual-rail pay-per-call market intelligence. FREE: /v1/track-record; cached $0.01: feed/snapshot/history/screener/route + /v1/korra/{calls,news,lean}; live desk $0.05. Same catalog on Base /v1/* and Solana /sol/v1/*. Descriptive market analysis only \u2014 not financial advice.",
+  "rails": {
+    "base": {
+      "id": "base-usdc-x402",
+      "status": "live",
+      "network": "eip155:8453",
+      "network_name": "Base",
+      "currency": "USDC",
+      "scheme": "exact-evm",
+      "payTo": "0x21E16F1bc3aA847236354C8193D0cB21cF412eFA",
+      "path_prefix": "",
+      "catalog_url": "https://vedetta.dethboy.com/.well-known/x402.json",
+      "note": "Live USDC x402 on Base. Paid /v1/* \u2192 HTTP 402. Free: /v1/track-record \u2192 200 + IP rate limits. Cached $0.01: feed/snapshot/history/screener/route/korra/*."
+    },
+    "solana": {
+      "id": "solana-x402-parallel",
+      "status": "live",
+      "network": "solana:mainnet",
+      "network_name": "Solana mainnet-beta",
+      "currency": "USDC",
+      "currency_alt": [
+        "USDC",
+        "SOL"
+      ],
+      "scheme": "exact-svm",
+      "payTo": "4kEdSopjVayXZ8DpAe6G3fVEFYDj6cny6AjWEEWr3Hdq",
+      "path_prefix": "/sol",
+      "catalog_url": "https://vedetta.dethboy.com/.well-known/x402-sol.json",
+      "agent_registry": {
+        "standard": "solana-8004",
+        "asset": "2p7BDa8Y5B9pVtTxTbiyWcioqjEnbqXPbMQDAQcoEQJg",
+        "owner": "4kEdSopjVayXZ8DpAe6G3fVEFYDj6cny6AjWEEWr3Hdq",
+        "op_wallet": "BKZGaaHUdDnjnm4KqR43shGraWARw2CqM2pSfUEauvV3",
+        "registration_tx": "2pcwdjheF4caLRh5Wqrp5TBnJGm8kimNLbh6SwKrWuaYxMVNFuAan2sreauttEEEMhW5tYA8sW9MnMdKMzWSTj1c",
+        "metadata_uri": "https://vedetta.dethboy.com/.well-known/8004-vedetta.json",
+        "explorer_token": "https://solscan.io/token/2p7BDa8Y5B9pVtTxTbiyWcioqjEnbqXPbMQDAQcoEQJg",
+        "explorer_tx": "https://solscan.io/tx/2pcwdjheF4caLRh5Wqrp5TBnJGm8kimNLbh6SwKrWuaYxMVNFuAan2sreauttEEEMhW5tYA8sW9MnMdKMzWSTj1c",
+        "hub": "https://x402synthex.xyz",
+        "spec": "https://8004.qnt.sh"
+      },
+      "note": "Parallel /sol/v1/* mirrors /v1/*. Track-record free on Sol; route/Korra $0.01 cached. Paid ExactSvm for paid routes; /sol/v1/feed paid-settle proven @ $0.01.",
+      "wire_network": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp",
+      "wire_scheme": "exact",
+      "paid_settle": {
+        "status": "proven",
+        "path": "/sol/v1/feed",
+        "method": "GET",
+        "proven_at": "2026-08-02",
+        "scope_note": "Feed path paid-smoked; other /sol/v1/* share ExactSvm and return unpaid 402",
+        "price_usd": 0.01,
+        "currency": "USDC",
+        "free": false
+      }
+    }
+  },
+  "same_price_rule": "Identical USD list prices on Base and Solana. Only track-record is $0.00 on both rails. Cached $0.01: feed/snapshot/history/screener/route + korra/*. Live desk $0.05. HTTP 402 offer is authoritative.",
+  "virtuals_acp": {
+    "agent_id": "019f9096-9541-7e61-8aef-7461ee1a40b0",
+    "url": "https://app.virtuals.io/acp/agents/019f9096-9541-7e61-8aef-7461ee1a40b0",
+    "settlement": "USDC escrow on Base (ACP agent wallet), not the x402 payTos",
+    "pricing_note": "ACP live offerings $0.05, matched to x402 live $0.05; ACP cached sentiment_snapshot and divergence_screener $0.01 escrow, matched to x402 GET /v1/snapshot @ $0.01."
+  },
+  "free_funnel": {
+    "endpoints": [
+      {
+        "path": "/v1/track-record",
+        "rate_limit_per_min_ip": 20
+      }
+    ],
+    "note": "HTTP 200, no wallet/x402 \u2014 track-record only. Route + Korra are now $0.01 cached (402 unpaid); Korra calls open_calls redacted; lean non-FEAR_GREED teaser. Mirrored on /sol/v1/*."
+  },
+  "resources_base": [
+    {
+      "slug": "feed",
+      "method": "GET",
+      "path": "/v1/feed",
+      "url": "https://vedetta.dethboy.com/v1/feed",
+      "parallel_of": "https://vedetta.dethboy.com/v1/feed",
+      "price_usd": 0.01,
+      "currency": "USDC",
+      "network": "none",
+      "free": false,
+      "free_tier": true,
+      "rate_limit_per_min_ip": 90,
+      "description": "$0.01 USDC x402 \u2014 Recent analyst desk posts as a fast JSON stream (?since_id=&asset=&limit=): cached, instant, Poll to detect when something changes, then escalate to a $0.05 live read (/v1/event, /v1/consensus, /v1/ask). Descriptive research, not financial advice.",
+      "params": {
+        "since_id": "INT \u2014 return posts with id greater than this (OPTIONAL, default 0)",
+        "asset": "STRING \u2014 one ticker to filter (OPTIONAL)",
+        "limit": "INT 1-50 (OPTIONAL, default 20)"
+      },
+      "rail_status": "live",
+      "price": 0.01
+    },
+    {
+      "slug": "route",
+      "method": "GET",
+      "path": "/v1/route",
+      "url": "https://vedetta.dethboy.com/v1/route",
+      "parallel_of": "https://vedetta.dethboy.com/v1/route",
+      "price_usd": 0.01,
+      "currency": "USDC",
+      "network": "none",
+      "free": false,
+      "free_tier": true,
+      "rate_limit_per_min_ip": 60,
+      "description": "$0.01 USDC x402 (rate-limited 60/min/IP) \u2014 Autonomous agent task router: describe what you need in plain English (?task=...) and get the exact Vedetta endpoint, parameters, ready-to-call URL and USD price \u2014 plus free/cheaper alternates. Instant local matching, never fires a live analyst read. Descriptive research, not financial advice.",
+      "params": {
+        "task": "STRING <=300 chars \u2014 plain-English description of what you need to know (REQUIRED)",
+        "asset": "STRING \u2014 one ticker hint (OPTIONAL; extracted from task if omitted)"
+      },
+      "rail_status": "live"
+    },
+    {
+      "slug": "snapshot",
+      "method": "GET",
+      "path": "/v1/snapshot",
+      "url": "https://vedetta.dethboy.com/v1/snapshot",
+      "parallel_of": "https://vedetta.dethboy.com/v1/snapshot",
+      "price_usd": 0.01,
+      "currency": "USDC",
+      "network": "none",
+      "free": false,
+      "free_tier": true,
+      "rate_limit_per_min_ip": 30,
+      "description": "$0.01 USDC x402 \u2014 Latest cached analyst signal for one asset (?asset=BTC): sentiment %, stance, divergence flag, narrative, signal_age_minutes and stale boolean. Check staleness; when stale=true or before executing a trade, upgrade to paid /v1/consensus ($0.05) for a guaranteed-fresh live verdict. Descriptive research, not financial advice.",
+      "params": {
+        "asset": "STRING \u2014 one ticker symbol, e.g. BTC, ETH, SOL (REQUIRED)"
+      },
+      "rail_status": "live",
+      "price": 0.01
+    },
+    {
+      "slug": "track-record",
+      "method": "GET",
+      "path": "/v1/track-record",
+      "url": "https://vedetta.dethboy.com/v1/track-record",
+      "parallel_of": "https://vedetta.dethboy.com/v1/track-record",
+      "price_usd": 0.0,
+      "currency": "USDC",
+      "network": "none",
+      "free": true,
+      "free_tier": true,
+      "rate_limit_per_min_ip": 20,
+      "description": "FREE USDC x402 \u2014 Verifiable analyst call log and transparency stats (?asset=BTC optional): every signal this desk has published, timestamped and countable, plus total paid calls served. Audit our track record before paying for live reads. Descriptive research, not financial advice.",
+      "params": {
+        "asset": "STRING \u2014 one ticker to filter the log (OPTIONAL; omit for all-asset stats)"
+      },
+      "rail_status": "live",
+      "price": 0.0
+    },
+    {
+      "slug": "ask",
+      "method": "GET",
+      "path": "/v1/ask",
+      "url": "https://vedetta.dethboy.com/v1/ask",
+      "parallel_of": "https://vedetta.dethboy.com/v1/ask",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "eip155:8453",
+      "free": false,
+      "free_tier": false,
+      "rate_limit_per_min_ip": null,
+      "description": "Ask a live crypto, stock, or macro analyst desk any market question \u2014 social sentiment, dominant narrative, Polymarket & Kalshi prediction-market odds, sentiment-vs-price divergence, whale positioning and funding context \u2014 answered fresh in 10-180s. ?q= free-form and/or ?asset=BTC. A live specialist desk at generic-AI-research prices. No charge if the desk fails to answer. Descriptive research, not financial advice.",
+      "params": {
+        "q": "STRING <=500 chars, URL-encoded \u2014 free-form market question (optional if asset given)",
+        "asset": "STRING \u2014 one ticker symbol, e.g. BTC (optional if q given; best results: both)",
+        "_rule": "at least one of q/asset required; one question, one asset per call"
+      },
+      "rail_status": "live"
+    },
+    {
+      "slug": "consensus",
+      "method": "GET",
+      "path": "/v1/consensus",
+      "url": "https://vedetta.dethboy.com/v1/consensus",
+      "parallel_of": "https://vedetta.dethboy.com/v1/consensus",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "eip155:8453",
+      "free": false,
+      "free_tier": false,
+      "rate_limit_per_min_ip": null,
+      "description": "Sentiment-vs-price divergence verdict for any crypto asset (BTC, ETH, SOL, SUI, HYPE, DOGE, XRP...): bullish/bearish/neutral verdict with confidence, live price, crowd sentiment %, prediction-market odds and dominant narrative. The contrarian alpha signal raw data APIs don't sell. Upgrade here when cached /v1/snapshot shows stale=true. Stale cache triggers a live analyst refresh inside the call (10-90s). Descriptive research, not financial advice.",
+      "params": {
+        "asset": "STRING \u2014 one ticker symbol, e.g. BTC, ETH, SOL (REQUIRED)"
+      },
+      "rail_status": "live"
+    },
+    {
+      "slug": "equity",
+      "method": "GET",
+      "path": "/v1/equity",
+      "url": "https://vedetta.dethboy.com/v1/equity",
+      "parallel_of": "https://vedetta.dethboy.com/v1/equity",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "eip155:8453",
+      "free": false,
+      "free_tier": false,
+      "rate_limit_per_min_ip": null,
+      "description": "Sentiment-vs-price divergence read on a US STOCK or equity ticker (?asset=NVDA, TSLA, AAPL, COIN, MSTR, PLTR, AMD, META): social sentiment %, dominant narrative, prediction-market context and divergence from price action \u2014 a live analyst verdict on equities and earnings sentiment, not raw SEC filings. Descriptive research, not financial advice.",
+      "params": {
+        "asset": "STRING \u2014 one US stock ticker, e.g. NVDA, TSLA, COIN, MSTR (REQUIRED)"
+      },
+      "rail_status": "live"
+    },
+    {
+      "slug": "macro",
+      "method": "GET",
+      "path": "/v1/macro",
+      "url": "https://vedetta.dethboy.com/v1/macro",
+      "parallel_of": "https://vedetta.dethboy.com/v1/macro",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "eip155:8453",
+      "free": false,
+      "free_tier": false,
+      "rate_limit_per_min_ip": null,
+      "description": "Live analyst read on a MACRO instrument \u2014 equity indices, treasury yields, volatility, commodities (?asset=SPX, VIX, US10Y, US2Y, GOLD, OIL, BRENT): crowd sentiment %, dominant FOMC/CPI/rates narrative and divergence vs price action. Descriptive research, not financial advice.",
+      "params": {
+        "asset": "STRING \u2014 one macro instrument: SPX, VIX, US10Y, US2Y, GOLD, OIL, BRENT (REQUIRED)"
+      },
+      "rail_status": "live"
+    },
+    {
+      "slug": "prediction",
+      "method": "GET",
+      "path": "/v1/prediction",
+      "url": "https://vedetta.dethboy.com/v1/prediction",
+      "parallel_of": "https://vedetta.dethboy.com/v1/prediction",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "eip155:8453",
+      "free": false,
+      "free_tier": false,
+      "rate_limit_per_min_ip": null,
+      "description": "A falsifiable analyst prediction and price forecast for one asset (?asset=BTC&horizon=7d): the explicit claim, confidence %, invalidation criteria (what proves it wrong), and prediction-market anchoring. Pair with free /v1/track-record to audit how past calls resolved \u2014 accountable machine predictions for trading agents. Descriptive research, not financial advice.",
+      "params": {
+        "asset": "STRING \u2014 one ticker symbol, e.g. BTC, ETH, SOL (REQUIRED)",
+        "horizon": "STRING \u2014 24h | 7d | 30d (OPTIONAL, default 7d)"
+      },
+      "rail_status": "live"
+    },
+    {
+      "slug": "pulse",
+      "method": "GET",
+      "path": "/v1/pulse",
+      "url": "https://vedetta.dethboy.com/v1/pulse",
+      "parallel_of": "https://vedetta.dethboy.com/v1/pulse",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "eip155:8453",
+      "free": false,
+      "free_tier": false,
+      "rate_limit_per_min_ip": null,
+      "description": "Market-wide crypto regime read in one live call: overall sentiment score, bull/bear/chop regime id, SPX/macro anchor and the top narrative driving the entire crypto market right now. Live analyst desk read, never a stale aggregate. Descriptive research, not financial advice.",
+      "params": {
+        "_rule": "no parameters \u2014 market-wide read"
+      },
+      "rail_status": "live"
+    },
+    {
+      "slug": "theme",
+      "method": "GET",
+      "path": "/v1/theme",
+      "url": "https://vedetta.dethboy.com/v1/theme",
+      "parallel_of": "https://vedetta.dethboy.com/v1/theme",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "eip155:8453",
+      "free": false,
+      "free_tier": false,
+      "rate_limit_per_min_ip": null,
+      "description": "Deep-dive on a tracked market theme or sector rotation (?theme=ai-sentiment-divergence, altcoin-decoupling, macro-risk-off, regulatory-pressure, tradfi-adoption, rwa, meme-supercycle, or free text): whether the narrative is strengthening or fading, which tickers it moves, and the desk's conviction. Descriptive research, not financial advice.",
+      "params": {
+        "theme": "STRING <=80 chars \u2014 a tracked or free-text market theme, e.g. ai-sentiment-divergence, altcoin-decoupling, macro-risk-off (REQUIRED)"
+      },
+      "rail_status": "live"
+    },
+    {
+      "slug": "trend",
+      "method": "GET",
+      "path": "/v1/trend",
+      "url": "https://vedetta.dethboy.com/v1/trend",
+      "parallel_of": "https://vedetta.dethboy.com/v1/trend",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "eip155:8453",
+      "free": false,
+      "free_tier": false,
+      "rate_limit_per_min_ip": null,
+      "description": "Price-vs-sentiment momentum trajectory for one asset over a time window (?asset=BTC&window=7d): how tape and crowd sentiment moved together or diverged over 24h/7d/30d, and whether momentum is strengthening or fading. Descriptive research, not financial advice.",
+      "params": {
+        "asset": "STRING \u2014 one ticker symbol, e.g. BTC, ETH, SOL (REQUIRED)",
+        "window": "STRING \u2014 24h | 7d | 30d (OPTIONAL, default 7d)"
+      },
+      "rail_status": "live"
+    },
+    {
+      "slug": "news-read",
+      "method": "GET",
+      "path": "/v1/news-read",
+      "url": "https://vedetta.dethboy.com/v1/news-read",
+      "parallel_of": "https://vedetta.dethboy.com/v1/news-read",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "eip155:8453",
+      "free": false,
+      "free_tier": false,
+      "rate_limit_per_min_ip": null,
+      "description": "Breaking market-moving news read and catalyst analysis for one asset (?asset=BTC): what just happened, why it matters for price action, and the crowd sentiment read on the catalyst \u2014 analyzed by a live desk, not a raw RSS headline feed. Descriptive research, not financial advice.",
+      "params": {
+        "asset": "STRING \u2014 one ticker symbol, e.g. BTC, ETH, SOL (REQUIRED)"
+      },
+      "rail_status": "live"
+    },
+    {
+      "slug": "house-view",
+      "method": "GET",
+      "path": "/v1/house-view",
+      "url": "https://vedetta.dethboy.com/v1/house-view",
+      "parallel_of": "https://vedetta.dethboy.com/v1/house-view",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "eip155:8453",
+      "free": false,
+      "free_tier": false,
+      "rate_limit_per_min_ip": null,
+      "description": "The analyst desk's current high-conviction thesis and house view on one crypto asset \u2014 tracked insight threads, thesis status (strengthening/weakening) and confidence score (?asset=BTC). Descriptive research, not financial advice.",
+      "params": {
+        "asset": "STRING \u2014 one ticker symbol, e.g. BTC, ETH, SOL (REQUIRED)"
+      },
+      "rail_status": "live"
+    },
+    {
+      "slug": "event",
+      "method": "GET",
+      "path": "/v1/event",
+      "url": "https://vedetta.dethboy.com/v1/event",
+      "parallel_of": "https://vedetta.dethboy.com/v1/event",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "eip155:8453",
+      "free": false,
+      "free_tier": false,
+      "rate_limit_per_min_ip": null,
+      "description": "Live catalyst & anomaly trigger probe on an asset (?asset=BTC): checks for significant real-time triggers \u2014 price_gap, news_shock, or social_spike \u2014 with a 1-10 significance score, or a clean no-event answer. Built for autonomous agent monitoring loops that escalate after polling cached /v1/feed. Descriptive research, not financial advice.",
+      "params": {
+        "asset": "STRING \u2014 one ticker symbol, e.g. BTC, ETH, SOL (REQUIRED)"
+      },
+      "rail_status": "live"
+    },
+    {
+      "slug": "odds",
+      "method": "GET",
+      "path": "/v1/odds",
+      "url": "https://vedetta.dethboy.com/v1/odds",
+      "parallel_of": "https://vedetta.dethboy.com/v1/odds",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "eip155:8453",
+      "free": false,
+      "free_tier": false,
+      "rate_limit_per_min_ip": null,
+      "description": "Live prediction-market odds (Polymarket, Kalshi, event contracts) for one crypto asset \u2014 nearest liquid market, implied probability %, venue \u2014 plus whether prediction-market odds agree or diverge from current social sentiment (?asset=BTC). Descriptive research, not financial advice.",
+      "params": {
+        "asset": "STRING \u2014 one ticker symbol, e.g. BTC, ETH, SOL (REQUIRED)"
+      },
+      "rail_status": "live"
+    },
+    {
+      "slug": "social",
+      "method": "GET",
+      "path": "/v1/social",
+      "url": "https://vedetta.dethboy.com/v1/social",
+      "parallel_of": "https://vedetta.dethboy.com/v1/social",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "eip155:8453",
+      "free": false,
+      "free_tier": false,
+      "rate_limit_per_min_ip": null,
+      "description": "Live social sentiment and crowd positioning read for one crypto asset (?asset=BTC): bullish %, social engagement score, and social volume trend vs baseline \u2014 fresh from the analyst desk. Descriptive research, not financial advice.",
+      "params": {
+        "asset": "STRING \u2014 one ticker symbol, e.g. BTC, ETH, SOL (REQUIRED)"
+      },
+      "rail_status": "live"
+    },
+    {
+      "slug": "narrative",
+      "method": "GET",
+      "path": "/v1/narrative",
+      "url": "https://vedetta.dethboy.com/v1/narrative",
+      "parallel_of": "https://vedetta.dethboy.com/v1/narrative",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "eip155:8453",
+      "free": false,
+      "free_tier": false,
+      "rate_limit_per_min_ip": null,
+      "description": "Dominant market narrative on one crypto asset and 24h narrative-rotation detection (?asset=BTC): identifies what the crowd is talking about right now and whether the primary story rotated in the last 24h. Descriptive research, not financial advice.",
+      "params": {
+        "asset": "STRING \u2014 one ticker symbol, e.g. BTC, ETH, SOL (REQUIRED)"
+      },
+      "rail_status": "live"
+    },
+    {
+      "slug": "screener",
+      "method": "GET",
+      "path": "/v1/screener",
+      "url": "https://vedetta.dethboy.com/v1/screener",
+      "parallel_of": "https://vedetta.dethboy.com/v1/screener",
+      "price_usd": 0.01,
+      "currency": "USDC",
+      "network": "eip155:8453",
+      "free": false,
+      "free_tier": false,
+      "rate_limit_per_min_ip": null,
+      "description": "Cross-asset contrarian divergence screener: scans every asset the desk covers with its latest cached sentiment %, stance, divergence_flagged boolean and signal age in ONE call (?only=divergent to filter to mispriced setups). Answers 'which asset should my agent trade or research first?' Cached-only. Descriptive research, not financial advice.",
+      "params": {
+        "only": "STRING \u2014 'divergent' to return only divergence-flagged assets (OPTIONAL, default all)"
+      },
+      "rail_status": "live"
+    },
+    {
+      "slug": "history",
+      "method": "GET",
+      "path": "/v1/history",
+      "url": "https://vedetta.dethboy.com/v1/history",
+      "parallel_of": "https://vedetta.dethboy.com/v1/history",
+      "price_usd": 0.01,
+      "currency": "USDC",
+      "network": "eip155:8453",
+      "free": false,
+      "free_tier": false,
+      "rate_limit_per_min_ip": null,
+      "description": "Historical analyst signal time-series for one asset (?asset=BTC&limit=50): timestamped sentiment %, stance, divergence flags and narratives \u2014 structured backtest fodder and historical sentiment data for quantitative agents. Descriptive research, not financial advice.",
+      "params": {
+        "asset": "STRING \u2014 one ticker symbol, e.g. BTC, ETH, SOL (REQUIRED)",
+        "limit": "INT 1-50 (OPTIONAL, default 50)"
+      },
+      "rail_status": "live"
+    },
+    {
+      "slug": "calls",
+      "method": "GET",
+      "path": "/v1/korra/calls",
+      "url": "https://vedetta.dethboy.com/v1/korra/calls",
+      "parallel_of": "https://vedetta.dethboy.com/v1/feed",
+      "price_usd": 0.01,
+      "currency": "USDC",
+      "network": "none",
+      "free": false,
+      "free_tier": true,
+      "rate_limit_per_min_ip": 90,
+      "description": "$0.01 USDC x402 \u2014 Korra calls (?asset= optional). Partner JSON as-is.",
+      "params": {
+        "since_id": "INT \u2014 return posts with id greater than this (OPTIONAL, default 0)",
+        "asset": "STRING \u2014 one ticker to filter (OPTIONAL)",
+        "limit": "INT 1-50 (OPTIONAL, default 20)"
+      },
+      "rail_status": "live"
+    },
+    {
+      "slug": "news",
+      "method": "GET",
+      "path": "/v1/korra/news",
+      "url": "https://vedetta.dethboy.com/v1/korra/news",
+      "parallel_of": "https://vedetta.dethboy.com/v1/feed",
+      "price_usd": 0.01,
+      "currency": "USDC",
+      "network": "none",
+      "free": false,
+      "free_tier": true,
+      "rate_limit_per_min_ip": 90,
+      "description": "$0.01 USDC x402 \u2014 Korra news (?asset= optional). Partner JSON as-is.",
+      "params": {
+        "since_id": "INT \u2014 return posts with id greater than this (OPTIONAL, default 0)",
+        "asset": "STRING \u2014 one ticker to filter (OPTIONAL)",
+        "limit": "INT 1-50 (OPTIONAL, default 20)"
+      },
+      "rail_status": "live"
+    },
+    {
+      "slug": "lean",
+      "method": "GET",
+      "path": "/v1/korra/lean",
+      "url": "https://vedetta.dethboy.com/v1/korra/lean",
+      "parallel_of": "https://vedetta.dethboy.com/v1/feed",
+      "price_usd": 0.01,
+      "currency": "USDC",
+      "network": "none",
+      "free": false,
+      "free_tier": true,
+      "rate_limit_per_min_ip": 90,
+      "description": "$0.01 USDC x402 \u2014 Korra lean (?asset= optional). Partner JSON as-is.",
+      "params": {
+        "since_id": "INT \u2014 return posts with id greater than this (OPTIONAL, default 0)",
+        "asset": "STRING \u2014 one ticker to filter (OPTIONAL)",
+        "limit": "INT 1-50 (OPTIONAL, default 20)"
+      },
+      "rail_status": "live"
+    }
+  ],
+  "resources_solana": [
+    {
+      "slug": "feed",
+      "method": "GET",
+      "path": "/sol/v1/feed",
+      "url": "https://vedetta.dethboy.com/sol/v1/feed",
+      "parallel_of": "https://vedetta.dethboy.com/v1/feed",
+      "price_usd": 0.01,
+      "currency": "USDC",
+      "network": "none",
+      "free": false,
+      "free_tier": true,
+      "rate_limit_per_min_ip": 90,
+      "description": "$0.01 USDC x402 \u2014 Recent analyst desk posts as a fast JSON stream (?since_id=&asset=&limit=): cached, instant, Poll to detect when something changes, then escalate to a $0.05 live read (/v1/event, /v1/consensus, /v1/ask). Descriptive research, not financial advice.",
+      "params": {
+        "since_id": "INT \u2014 return posts with id greater than this (OPTIONAL, default 0)",
+        "asset": "STRING \u2014 one ticker to filter (OPTIONAL)",
+        "limit": "INT 1-50 (OPTIONAL, default 20)"
+      },
+      "rail_status": "live",
+      "price": 0.01
+    },
+    {
+      "slug": "route",
+      "method": "GET",
+      "path": "/sol/v1/route",
+      "url": "https://vedetta.dethboy.com/sol/v1/route",
+      "parallel_of": "https://vedetta.dethboy.com/v1/route",
+      "price_usd": 0.01,
+      "currency": "USDC",
+      "network": "none",
+      "free": false,
+      "free_tier": true,
+      "rate_limit_per_min_ip": 60,
+      "description": "$0.01 USDC x402 (rate-limited 60/min/IP) \u2014 Autonomous agent task router: describe what you need in plain English (?task=...) and get the exact Vedetta endpoint, parameters, ready-to-call URL and USD price \u2014 plus free/cheaper alternates. Instant local matching, never fires a live analyst read. Descriptive research, not financial advice.",
+      "params": {
+        "task": "STRING <=300 chars \u2014 plain-English description of what you need to know (REQUIRED)",
+        "asset": "STRING \u2014 one ticker hint (OPTIONAL; extracted from task if omitted)"
+      },
+      "rail_status": "live"
+    },
+    {
+      "slug": "snapshot",
+      "method": "GET",
+      "path": "/sol/v1/snapshot",
+      "url": "https://vedetta.dethboy.com/sol/v1/snapshot",
+      "parallel_of": "https://vedetta.dethboy.com/v1/snapshot",
+      "price_usd": 0.01,
+      "currency": "USDC",
+      "network": "none",
+      "free": false,
+      "free_tier": true,
+      "rate_limit_per_min_ip": 30,
+      "description": "$0.01 USDC x402 \u2014 Latest cached analyst signal for one asset (?asset=BTC): sentiment %, stance, divergence flag, narrative, signal_age_minutes and stale boolean. Check staleness; when stale=true or before executing a trade, upgrade to paid /v1/consensus ($0.05) for a guaranteed-fresh live verdict. Descriptive research, not financial advice.",
+      "params": {
+        "asset": "STRING \u2014 one ticker symbol, e.g. BTC, ETH, SOL (REQUIRED)"
+      },
+      "rail_status": "live",
+      "price": 0.01
+    },
+    {
+      "slug": "track-record",
+      "method": "GET",
+      "path": "/sol/v1/track-record",
+      "url": "https://vedetta.dethboy.com/sol/v1/track-record",
+      "parallel_of": "https://vedetta.dethboy.com/v1/track-record",
+      "price_usd": 0.0,
+      "currency": "USDC",
+      "network": "none",
+      "free": true,
+      "free_tier": true,
+      "rate_limit_per_min_ip": 20,
+      "description": "FREE USDC x402 \u2014 Verifiable analyst call log and transparency stats (?asset=BTC optional): every signal this desk has published, timestamped and countable, plus total paid calls served. Audit our track record before paying for live reads. Descriptive research, not financial advice.",
+      "params": {
+        "asset": "STRING \u2014 one ticker to filter the log (OPTIONAL; omit for all-asset stats)"
+      },
+      "rail_status": "live",
+      "price": 0.0
+    },
+    {
+      "slug": "ask",
+      "method": "GET",
+      "path": "/sol/v1/ask",
+      "url": "https://vedetta.dethboy.com/sol/v1/ask",
+      "parallel_of": "https://vedetta.dethboy.com/v1/ask",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp",
+      "free": false,
+      "free_tier": false,
+      "rate_limit_per_min_ip": null,
+      "description": "Ask a live crypto, stock, or macro analyst desk any market question \u2014 social sentiment, dominant narrative, Polymarket & Kalshi prediction-market odds, sentiment-vs-price divergence, whale positioning and funding context \u2014 answered fresh in 10-180s. ?q= free-form and/or ?asset=BTC. A live specialist desk at generic-AI-research prices. No charge if the desk fails to answer. Descriptive research, not financial advice.",
+      "params": {
+        "q": "STRING <=500 chars, URL-encoded \u2014 free-form market question (optional if asset given)",
+        "asset": "STRING \u2014 one ticker symbol, e.g. BTC (optional if q given; best results: both)",
+        "_rule": "at least one of q/asset required; one question, one asset per call"
+      },
+      "rail_status": "live"
+    },
+    {
+      "slug": "consensus",
+      "method": "GET",
+      "path": "/sol/v1/consensus",
+      "url": "https://vedetta.dethboy.com/sol/v1/consensus",
+      "parallel_of": "https://vedetta.dethboy.com/v1/consensus",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp",
+      "free": false,
+      "free_tier": false,
+      "rate_limit_per_min_ip": null,
+      "description": "Sentiment-vs-price divergence verdict for any crypto asset (BTC, ETH, SOL, SUI, HYPE, DOGE, XRP...): bullish/bearish/neutral verdict with confidence, live price, crowd sentiment %, prediction-market odds and dominant narrative. The contrarian alpha signal raw data APIs don't sell. Upgrade here when cached /v1/snapshot shows stale=true. Stale cache triggers a live analyst refresh inside the call (10-90s). Descriptive research, not financial advice.",
+      "params": {
+        "asset": "STRING \u2014 one ticker symbol, e.g. BTC, ETH, SOL (REQUIRED)"
+      },
+      "rail_status": "live"
+    },
+    {
+      "slug": "equity",
+      "method": "GET",
+      "path": "/sol/v1/equity",
+      "url": "https://vedetta.dethboy.com/sol/v1/equity",
+      "parallel_of": "https://vedetta.dethboy.com/v1/equity",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp",
+      "free": false,
+      "free_tier": false,
+      "rate_limit_per_min_ip": null,
+      "description": "Sentiment-vs-price divergence read on a US STOCK or equity ticker (?asset=NVDA, TSLA, AAPL, COIN, MSTR, PLTR, AMD, META): social sentiment %, dominant narrative, prediction-market context and divergence from price action \u2014 a live analyst verdict on equities and earnings sentiment, not raw SEC filings. Descriptive research, not financial advice.",
+      "params": {
+        "asset": "STRING \u2014 one US stock ticker, e.g. NVDA, TSLA, COIN, MSTR (REQUIRED)"
+      },
+      "rail_status": "live"
+    },
+    {
+      "slug": "macro",
+      "method": "GET",
+      "path": "/sol/v1/macro",
+      "url": "https://vedetta.dethboy.com/sol/v1/macro",
+      "parallel_of": "https://vedetta.dethboy.com/v1/macro",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp",
+      "free": false,
+      "free_tier": false,
+      "rate_limit_per_min_ip": null,
+      "description": "Live analyst read on a MACRO instrument \u2014 equity indices, treasury yields, volatility, commodities (?asset=SPX, VIX, US10Y, US2Y, GOLD, OIL, BRENT): crowd sentiment %, dominant FOMC/CPI/rates narrative and divergence vs price action. Descriptive research, not financial advice.",
+      "params": {
+        "asset": "STRING \u2014 one macro instrument: SPX, VIX, US10Y, US2Y, GOLD, OIL, BRENT (REQUIRED)"
+      },
+      "rail_status": "live"
+    },
+    {
+      "slug": "prediction",
+      "method": "GET",
+      "path": "/sol/v1/prediction",
+      "url": "https://vedetta.dethboy.com/sol/v1/prediction",
+      "parallel_of": "https://vedetta.dethboy.com/v1/prediction",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp",
+      "free": false,
+      "free_tier": false,
+      "rate_limit_per_min_ip": null,
+      "description": "A falsifiable analyst prediction and price forecast for one asset (?asset=BTC&horizon=7d): the explicit claim, confidence %, invalidation criteria (what proves it wrong), and prediction-market anchoring. Pair with free /v1/track-record to audit how past calls resolved \u2014 accountable machine predictions for trading agents. Descriptive research, not financial advice.",
+      "params": {
+        "asset": "STRING \u2014 one ticker symbol, e.g. BTC, ETH, SOL (REQUIRED)",
+        "horizon": "STRING \u2014 24h | 7d | 30d (OPTIONAL, default 7d)"
+      },
+      "rail_status": "live"
+    },
+    {
+      "slug": "pulse",
+      "method": "GET",
+      "path": "/sol/v1/pulse",
+      "url": "https://vedetta.dethboy.com/sol/v1/pulse",
+      "parallel_of": "https://vedetta.dethboy.com/v1/pulse",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp",
+      "free": false,
+      "free_tier": false,
+      "rate_limit_per_min_ip": null,
+      "description": "Market-wide crypto regime read in one live call: overall sentiment score, bull/bear/chop regime id, SPX/macro anchor and the top narrative driving the entire crypto market right now. Live analyst desk read, never a stale aggregate. Descriptive research, not financial advice.",
+      "params": {
+        "_rule": "no parameters \u2014 market-wide read"
+      },
+      "rail_status": "live"
+    },
+    {
+      "slug": "theme",
+      "method": "GET",
+      "path": "/sol/v1/theme",
+      "url": "https://vedetta.dethboy.com/sol/v1/theme",
+      "parallel_of": "https://vedetta.dethboy.com/v1/theme",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp",
+      "free": false,
+      "free_tier": false,
+      "rate_limit_per_min_ip": null,
+      "description": "Deep-dive on a tracked market theme or sector rotation (?theme=ai-sentiment-divergence, altcoin-decoupling, macro-risk-off, regulatory-pressure, tradfi-adoption, rwa, meme-supercycle, or free text): whether the narrative is strengthening or fading, which tickers it moves, and the desk's conviction. Descriptive research, not financial advice.",
+      "params": {
+        "theme": "STRING <=80 chars \u2014 a tracked or free-text market theme, e.g. ai-sentiment-divergence, altcoin-decoupling, macro-risk-off (REQUIRED)"
+      },
+      "rail_status": "live"
+    },
+    {
+      "slug": "trend",
+      "method": "GET",
+      "path": "/sol/v1/trend",
+      "url": "https://vedetta.dethboy.com/sol/v1/trend",
+      "parallel_of": "https://vedetta.dethboy.com/v1/trend",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp",
+      "free": false,
+      "free_tier": false,
+      "rate_limit_per_min_ip": null,
+      "description": "Price-vs-sentiment momentum trajectory for one asset over a time window (?asset=BTC&window=7d): how tape and crowd sentiment moved together or diverged over 24h/7d/30d, and whether momentum is strengthening or fading. Descriptive research, not financial advice.",
+      "params": {
+        "asset": "STRING \u2014 one ticker symbol, e.g. BTC, ETH, SOL (REQUIRED)",
+        "window": "STRING \u2014 24h | 7d | 30d (OPTIONAL, default 7d)"
+      },
+      "rail_status": "live"
+    },
+    {
+      "slug": "news-read",
+      "method": "GET",
+      "path": "/sol/v1/news-read",
+      "url": "https://vedetta.dethboy.com/sol/v1/news-read",
+      "parallel_of": "https://vedetta.dethboy.com/v1/news-read",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp",
+      "free": false,
+      "free_tier": false,
+      "rate_limit_per_min_ip": null,
+      "description": "Breaking market-moving news read and catalyst analysis for one asset (?asset=BTC): what just happened, why it matters for price action, and the crowd sentiment read on the catalyst \u2014 analyzed by a live desk, not a raw RSS headline feed. Descriptive research, not financial advice.",
+      "params": {
+        "asset": "STRING \u2014 one ticker symbol, e.g. BTC, ETH, SOL (REQUIRED)"
+      },
+      "rail_status": "live"
+    },
+    {
+      "slug": "house-view",
+      "method": "GET",
+      "path": "/sol/v1/house-view",
+      "url": "https://vedetta.dethboy.com/sol/v1/house-view",
+      "parallel_of": "https://vedetta.dethboy.com/v1/house-view",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp",
+      "free": false,
+      "free_tier": false,
+      "rate_limit_per_min_ip": null,
+      "description": "The analyst desk's current high-conviction thesis and house view on one crypto asset \u2014 tracked insight threads, thesis status (strengthening/weakening) and confidence score (?asset=BTC). Descriptive research, not financial advice.",
+      "params": {
+        "asset": "STRING \u2014 one ticker symbol, e.g. BTC, ETH, SOL (REQUIRED)"
+      },
+      "rail_status": "live"
+    },
+    {
+      "slug": "event",
+      "method": "GET",
+      "path": "/sol/v1/event",
+      "url": "https://vedetta.dethboy.com/sol/v1/event",
+      "parallel_of": "https://vedetta.dethboy.com/v1/event",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp",
+      "free": false,
+      "free_tier": false,
+      "rate_limit_per_min_ip": null,
+      "description": "Live catalyst & anomaly trigger probe on an asset (?asset=BTC): checks for significant real-time triggers \u2014 price_gap, news_shock, or social_spike \u2014 with a 1-10 significance score, or a clean no-event answer. Built for autonomous agent monitoring loops that escalate after polling cached /v1/feed. Descriptive research, not financial advice.",
+      "params": {
+        "asset": "STRING \u2014 one ticker symbol, e.g. BTC, ETH, SOL (REQUIRED)"
+      },
+      "rail_status": "live"
+    },
+    {
+      "slug": "odds",
+      "method": "GET",
+      "path": "/sol/v1/odds",
+      "url": "https://vedetta.dethboy.com/sol/v1/odds",
+      "parallel_of": "https://vedetta.dethboy.com/v1/odds",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp",
+      "free": false,
+      "free_tier": false,
+      "rate_limit_per_min_ip": null,
+      "description": "Live prediction-market odds (Polymarket, Kalshi, event contracts) for one crypto asset \u2014 nearest liquid market, implied probability %, venue \u2014 plus whether prediction-market odds agree or diverge from current social sentiment (?asset=BTC). Descriptive research, not financial advice.",
+      "params": {
+        "asset": "STRING \u2014 one ticker symbol, e.g. BTC, ETH, SOL (REQUIRED)"
+      },
+      "rail_status": "live"
+    },
+    {
+      "slug": "social",
+      "method": "GET",
+      "path": "/sol/v1/social",
+      "url": "https://vedetta.dethboy.com/sol/v1/social",
+      "parallel_of": "https://vedetta.dethboy.com/v1/social",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp",
+      "free": false,
+      "free_tier": false,
+      "rate_limit_per_min_ip": null,
+      "description": "Live social sentiment and crowd positioning read for one crypto asset (?asset=BTC): bullish %, social engagement score, and social volume trend vs baseline \u2014 fresh from the analyst desk. Descriptive research, not financial advice.",
+      "params": {
+        "asset": "STRING \u2014 one ticker symbol, e.g. BTC, ETH, SOL (REQUIRED)"
+      },
+      "rail_status": "live"
+    },
+    {
+      "slug": "narrative",
+      "method": "GET",
+      "path": "/sol/v1/narrative",
+      "url": "https://vedetta.dethboy.com/sol/v1/narrative",
+      "parallel_of": "https://vedetta.dethboy.com/v1/narrative",
+      "price_usd": 0.05,
+      "currency": "USDC",
+      "network": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp",
+      "free": false,
+      "free_tier": false,
+      "rate_limit_per_min_ip": null,
+      "description": "Dominant market narrative on one crypto asset and 24h narrative-rotation detection (?asset=BTC): identifies what the crowd is talking about right now and whether the primary story rotated in the last 24h. Descriptive research, not financial advice.",
+      "params": {
+        "asset": "STRING \u2014 one ticker symbol, e.g. BTC, ETH, SOL (REQUIRED)"
+      },
+      "rail_status": "live"
+    },
+    {
+      "slug": "screener",
+      "method": "GET",
+      "path": "/sol/v1/screener",
+      "url": "https://vedetta.dethboy.com/sol/v1/screener",
+      "parallel_of": "https://vedetta.dethboy.com/v1/screener",
+      "price_usd": 0.01,
+      "currency": "USDC",
+      "network": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp",
+      "free": false,
+      "free_tier": false,
+      "rate_limit_per_min_ip": null,
+      "description": "Cross-asset contrarian divergence screener: scans every asset the desk covers with its latest cached sentiment %, stance, divergence_flagged boolean and signal age in ONE call (?only=divergent to filter to mispriced setups). Answers 'which asset should my agent trade or research first?' Cached-only. Descriptive research, not financial advice.",
+      "params": {
+        "only": "STRING \u2014 'divergent' to return only divergence-flagged assets (OPTIONAL, default all)"
+      },
+      "rail_status": "live"
+    },
+    {
+      "slug": "history",
+      "method": "GET",
+      "path": "/sol/v1/history",
+      "url": "https://vedetta.dethboy.com/sol/v1/history",
+      "parallel_of": "https://vedetta.dethboy.com/v1/history",
+      "price_usd": 0.01,
+      "currency": "USDC",
+      "network": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp",
+      "free": false,
+      "free_tier": false,
+      "rate_limit_per_min_ip": null,
+      "description": "Historical analyst signal time-series for one asset (?asset=BTC&limit=50): timestamped sentiment %, stance, divergence flags and narratives \u2014 structured backtest fodder and historical sentiment data for quantitative agents. Descriptive research, not financial advice.",
+      "params": {
+        "asset": "STRING \u2014 one ticker symbol, e.g. BTC, ETH, SOL (REQUIRED)",
+        "limit": "INT 1-50 (OPTIONAL, default 50)"
+      },
+      "rail_status": "live"
+    },
+    {
+      "slug": "calls",
+      "method": "GET",
+      "path": "/v1/korra/calls",
+      "url": "https://vedetta.dethboy.com/v1/korra/calls",
+      "parallel_of": "https://vedetta.dethboy.com/v1/feed",
+      "price_usd": 0.01,
+      "currency": "USDC",
+      "network": "none",
+      "free": false,
+      "free_tier": true,
+      "rate_limit_per_min_ip": 90,
+      "description": "$0.01 USDC x402 \u2014 Korra calls (?asset= optional). Partner JSON as-is.",
+      "params": {
+        "since_id": "INT \u2014 return posts with id greater than this (OPTIONAL, default 0)",
+        "asset": "STRING \u2014 one ticker to filter (OPTIONAL)",
+        "limit": "INT 1-50 (OPTIONAL, default 20)"
+      },
+      "rail_status": "live"
+    },
+    {
+      "slug": "news",
+      "method": "GET",
+      "path": "/v1/korra/news",
+      "url": "https://vedetta.dethboy.com/v1/korra/news",
+      "parallel_of": "https://vedetta.dethboy.com/v1/feed",
+      "price_usd": 0.01,
+      "currency": "USDC",
+      "network": "none",
+      "free": false,
+      "free_tier": true,
+      "rate_limit_per_min_ip": 90,
+      "description": "$0.01 USDC x402 \u2014 Korra news (?asset= optional). Partner JSON as-is.",
+      "params": {
+        "since_id": "INT \u2014 return posts with id greater than this (OPTIONAL, default 0)",
+        "asset": "STRING \u2014 one ticker to filter (OPTIONAL)",
+        "limit": "INT 1-50 (OPTIONAL, default 20)"
+      },
+      "rail_status": "live"
+    },
+    {
+      "slug": "lean",
+      "method": "GET",
+      "path": "/v1/korra/lean",
+      "url": "https://vedetta.dethboy.com/v1/korra/lean",
+      "parallel_of": "https://vedetta.dethboy.com/v1/feed",
+      "price_usd": 0.01,
+      "currency": "USDC",
+      "network": "none",
+      "free": false,
+      "free_tier": true,
+      "rate_limit_per_min_ip": 90,
+      "description": "$0.01 USDC x402 \u2014 Korra lean (?asset= optional). Partner JSON as-is.",
+      "params": {
+        "since_id": "INT \u2014 return posts with id greater than this (OPTIONAL, default 0)",
+        "asset": "STRING \u2014 one ticker to filter (OPTIONAL)",
+        "limit": "INT 1-50 (OPTIONAL, default 20)"
+      },
+      "rail_status": "live"
+    }
+  ]
+}

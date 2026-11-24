@@ -1,0 +1,85 @@
+{
+  "service": "Vedetta",
+  "base_url": "https://vedetta.dethboy.com",
+  "version": "2.14.1",
+  "description": "Dual-rail pay-per-call market intelligence. FREE: /v1/track-record; cached $0.01: feed/snapshot/history/screener/route + /v1/korra/{calls,news,lean}; live desk $0.05. Same catalog on Base /v1/* and Solana /sol/v1/*. Descriptive market analysis only \u2014 not financial advice.",
+  "free_funnel": {
+    "endpoints": [
+      {
+        "path": "/v1/track-record",
+        "rate_limit_per_min_ip": 20
+      }
+    ],
+    "note": "HTTP 200, no wallet/x402 \u2014 track-record only. Route + Korra are now $0.01 cached (402 unpaid); Korra calls open_calls redacted; lean non-FEAR_GREED teaser. Mirrored on /sol/v1/*."
+  },
+  "rails": {
+    "base": {
+      "id": "base-usdc-x402",
+      "status": "live",
+      "network": "eip155:8453",
+      "network_name": "Base",
+      "currency": "USDC",
+      "scheme": "exact-evm",
+      "payTo": "0x21E16F1bc3aA847236354C8193D0cB21cF412eFA",
+      "path_prefix": "",
+      "catalog_url": "https://vedetta.dethboy.com/.well-known/x402.json",
+      "note": "Live USDC x402 on Base. Paid /v1/* \u2192 HTTP 402. Free: /v1/track-record \u2192 200 + IP rate limits. Cached $0.01: feed/snapshot/history/screener/route + /v1/korra/*."
+    },
+    "solana": {
+      "id": "solana-x402-parallel",
+      "status": "live",
+      "network": "solana:mainnet",
+      "network_name": "Solana mainnet-beta",
+      "currency": "USDC",
+      "currency_alt": [
+        "USDC",
+        "SOL"
+      ],
+      "scheme": "exact-svm",
+      "payTo": "4kEdSopjVayXZ8DpAe6G3fVEFYDj6cny6AjWEEWr3Hdq",
+      "path_prefix": "/sol",
+      "catalog_url": "https://vedetta.dethboy.com/.well-known/x402-sol.json",
+      "agent_registry": {
+        "standard": "solana-8004",
+        "asset": "2p7BDa8Y5B9pVtTxTbiyWcioqjEnbqXPbMQDAQcoEQJg",
+        "owner": "4kEdSopjVayXZ8DpAe6G3fVEFYDj6cny6AjWEEWr3Hdq",
+        "op_wallet": "BKZGaaHUdDnjnm4KqR43shGraWARw2CqM2pSfUEauvV3",
+        "registration_tx": "2pcwdjheF4caLRh5Wqrp5TBnJGm8kimNLbh6SwKrWuaYxMVNFuAan2sreauttEEEMhW5tYA8sW9MnMdKMzWSTj1c",
+        "metadata_uri": "https://vedetta.dethboy.com/.well-known/8004-vedetta.json",
+        "explorer_token": "https://solscan.io/token/2p7BDa8Y5B9pVtTxTbiyWcioqjEnbqXPbMQDAQcoEQJg",
+        "explorer_tx": "https://solscan.io/tx/2pcwdjheF4caLRh5Wqrp5TBnJGm8kimNLbh6SwKrWuaYxMVNFuAan2sreauttEEEMhW5tYA8sW9MnMdKMzWSTj1c",
+        "hub": "https://8004.qnt.sh",
+        "spec": "https://8004.qnt.sh"
+      },
+      "note": "Parallel /sol/v1/* mirrors /v1/*. Track-record free on Sol; Korra+route $0.01 cached. Paid ExactSvm for paid routes including $0.01 cached + $0.05 live.",
+      "wire_network": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp",
+      "wire_scheme": "exact",
+      "paid_settle": {
+        "status": "proven",
+        "path": "/sol/v1/feed",
+        "method": "GET",
+        "proven_at": "2026-08-02",
+        "scope_note": "Feed path paid-smoked; other /sol/v1/* share ExactSvm and return unpaid 402"
+      }
+    }
+  },
+  "pricing": {
+    "free": [
+      "track-record"
+    ],
+    "paid_usd": {
+      "live_desk": 0.05,
+      "screener": 0.01,
+      "history": 0.01,
+      "feed": 0.01,
+      "snapshot": 0.01,
+      "route": 0.01,
+      "korra/calls": 0.01,
+      "korra/news": 0.01,
+      "korra/lean": 0.01
+    },
+    "acp_escrow_note": "Virtuals ACP cached snapshot/screener escrow is $0.01, matched to x402; x402 /v1/snapshot is $0.01; /v1/track-record is FREE.",
+    "funnel_usd": 0.01,
+    "ladder": "free track-record \u2192 cached $0.01 (korra/route/feed/snapshot/history/screener) \u2192 live $0.05"
+  }
+}

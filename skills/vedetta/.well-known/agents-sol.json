@@ -1,0 +1,49 @@
+{
+  "name": "Vedetta",
+  "rail": "solana",
+  "description": "Vedetta Solana rail \u2014 FREE endpoint (/sol/v1/track-record) + 22 x402 ExactSvm paid endpoints (cached $0.01: feed/snapshot/history/screener/route/Korra; live desk $0.05). Mirrors Base prices. Descriptive research, not financial advice.",
+  "url": "https://vedetta.dethboy.com/sol",
+  "type": "paid-api",
+  "payment": {
+    "protocol": "x402",
+    "scheme": "exact-svm",
+    "network": "solana:mainnet",
+    "asset": "USDC",
+    "payTo": "4kEdSopjVayXZ8DpAe6G3fVEFYDj6cny6AjWEEWr3Hdq",
+    "status": "live",
+    "parallel_base": {
+      "network": "eip155:8453",
+      "payTo": "0x21E16F1bc3aA847236354C8193D0cB21cF412eFA",
+      "status": "live",
+      "url": "https://vedetta.dethboy.com"
+    }
+  },
+  "identity": {
+    "solana_8004_asset": "2p7BDa8Y5B9pVtTxTbiyWcioqjEnbqXPbMQDAQcoEQJg",
+    "owner": "4kEdSopjVayXZ8DpAe6G3fVEFYDj6cny6AjWEEWr3Hdq",
+    "op_wallet": "BKZGaaHUdDnjnm4KqR43shGraWARw2CqM2pSfUEauvV3",
+    "metadata_uri": "https://vedetta.dethboy.com/.well-known/8004-vedetta.json",
+    "solscan": "https://solscan.io/token/2p7BDa8Y5B9pVtTxTbiyWcioqjEnbqXPbMQDAQcoEQJg"
+  },
+  "interfaces": {
+    "x402_manifest_sol": "https://vedetta.dethboy.com/.well-known/x402-sol.json",
+    "x402_manifest_base": "https://vedetta.dethboy.com/.well-known/x402.json",
+    "rails": "https://vedetta.dethboy.com/rails.json",
+    "catalog_dual": "https://vedetta.dethboy.com/catalog-dual.json",
+    "registry_sol": "https://vedetta.dethboy.com/registry-sol.json",
+    "endpoints_sol": "https://vedetta.dethboy.com/endpoints-sol.txt",
+    "llms_txt": "https://vedetta.dethboy.com/llms.txt",
+    "openapi": "https://vedetta.dethboy.com/openapi.json",
+    "skill": "https://vedetta.dethboy.com/SKILL.md"
+  },
+  "contact": "vedetta@dethboy.com",
+  "status": "live",
+  "paid_settle": {
+    "status": "proven",
+    "path": "/sol/v1/feed",
+    "method": "GET",
+    "proven_at": "2026-08-02",
+    "scope_note": "Feed path paid-smoked; other /sol/v1/* share ExactSvm and return unpaid 402"
+  },
+  "version": "2.14.1"
+}

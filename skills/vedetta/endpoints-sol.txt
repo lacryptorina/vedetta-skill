@@ -1,0 +1,28 @@
+# Vedetta Solana parallel endpoints (prefix /sol) — v2.14.0
+# payTo=4kEdSopjVayXZ8DpAe6G3fVEFYDj6cny6AjWEEWr3Hdq
+# Free (no x402): track-record 20/min. Cached $0.01: route 60/min, korra/calls 60, korra/news 30, korra/lean 20, feed/snapshot/history/screener
+# Paid ExactSvm: cached $0.01 (feed/snapshot/history/screener/route/korra) + live desk $0.05
+
+feed|0.01|USDC|https://vedetta.dethboy.com/sol/v1/feed|parallel_of=https://vedetta.dethboy.com/v1/feed
+route|0.01|USDC|https://vedetta.dethboy.com/sol/v1/route|rate_limit=60/min/IP|parallel_of=https://vedetta.dethboy.com/v1/route
+korra/calls|0.01|USDC|https://vedetta.dethboy.com/sol/v1/korra/calls|parallel_of=https://vedetta.dethboy.com/v1/korra/calls
+korra/news|0.01|USDC|https://vedetta.dethboy.com/sol/v1/korra/news|parallel_of=https://vedetta.dethboy.com/v1/korra/news
+korra/lean|0.01|USDC|https://vedetta.dethboy.com/sol/v1/korra/lean|parallel_of=https://vedetta.dethboy.com/v1/korra/lean
+snapshot|0.01|USDC|https://vedetta.dethboy.com/sol/v1/snapshot|parallel_of=https://vedetta.dethboy.com/v1/snapshot
+track-record|0.00|FREE|https://vedetta.dethboy.com/sol/v1/track-record|rate_limit=20/min/IP|parallel_of=https://vedetta.dethboy.com/v1/track-record
+ask|0.05|https://vedetta.dethboy.com/sol/v1/ask|parallel_of=https://vedetta.dethboy.com/v1/ask
+consensus|0.05|https://vedetta.dethboy.com/sol/v1/consensus|parallel_of=https://vedetta.dethboy.com/v1/consensus
+equity|0.05|https://vedetta.dethboy.com/sol/v1/equity|parallel_of=https://vedetta.dethboy.com/v1/equity
+macro|0.05|https://vedetta.dethboy.com/sol/v1/macro|parallel_of=https://vedetta.dethboy.com/v1/macro
+prediction|0.05|https://vedetta.dethboy.com/sol/v1/prediction|parallel_of=https://vedetta.dethboy.com/v1/prediction
+pulse|0.05|https://vedetta.dethboy.com/sol/v1/pulse|parallel_of=https://vedetta.dethboy.com/v1/pulse
+theme|0.05|https://vedetta.dethboy.com/sol/v1/theme|parallel_of=https://vedetta.dethboy.com/v1/theme
+trend|0.05|https://vedetta.dethboy.com/sol/v1/trend|parallel_of=https://vedetta.dethboy.com/v1/trend
+news-read|0.05|https://vedetta.dethboy.com/sol/v1/news-read|parallel_of=https://vedetta.dethboy.com/v1/news-read
+house-view|0.05|https://vedetta.dethboy.com/sol/v1/house-view|parallel_of=https://vedetta.dethboy.com/v1/house-view
+event|0.05|https://vedetta.dethboy.com/sol/v1/event|parallel_of=https://vedetta.dethboy.com/v1/event
+odds|0.05|https://vedetta.dethboy.com/sol/v1/odds|parallel_of=https://vedetta.dethboy.com/v1/odds
+social|0.05|https://vedetta.dethboy.com/sol/v1/social|parallel_of=https://vedetta.dethboy.com/v1/social
+narrative|0.05|https://vedetta.dethboy.com/sol/v1/narrative|parallel_of=https://vedetta.dethboy.com/v1/narrative
+screener|0.01|https://vedetta.dethboy.com/sol/v1/screener|parallel_of=https://vedetta.dethboy.com/v1/screener
+history|0.01|https://vedetta.dethboy.com/sol/v1/history|parallel_of=https://vedetta.dethboy.com/v1/history
